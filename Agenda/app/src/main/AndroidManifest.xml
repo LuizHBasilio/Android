@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Agenda">
         <activity
-            android:name=".ListaAlunosActivity"
+            android:name=".activity.ListaAlunosActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FormularioAlunoActivity"
+            android:name=".activity.FormularioAlunoActivity"
             android:exported="true">
         </activity>
 
