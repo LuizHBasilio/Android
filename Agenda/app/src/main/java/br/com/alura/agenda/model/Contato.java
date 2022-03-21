@@ -2,19 +2,19 @@ package br.com.alura.agenda.model;
 
 import java.io.Serializable;
 
-public class Aluno implements Serializable {
+public class Contato implements Serializable {
     private int id = 0;
     private String nome;
     private String telefone;
     private String email;
 
-    public Aluno(String nome, String telefone, String email) {
+    public Contato(String nome, String telefone, String email) {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
     }
 
-    public Aluno() {
+    public Contato() {
 
     }
 

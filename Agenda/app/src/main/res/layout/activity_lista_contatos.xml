@@ -4,18 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/activity_lista_alunos_fab_novo_aluno"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/activity_lista_contatos_fab_novo_contato"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:src="@drawable/ic_action_novo_aluno"/>
+        android:src="@drawable/ic_action_novo_contato"
+        android:contentDescription="Adicionar contatos"
+        android:focusable="true" />
 
     <ListView
-        android:id="@+id/activity_lista_de_alunos_listview"
+        android:id="@+id/activity_lista_de_contatos_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
