@@ -51,7 +51,7 @@ public class ListaContatosAdapter extends BaseAdapter {
         TextView nome = viewCriada.findViewById(R.id.item_contato_nome);
         nome.setText(contato.getNome());
         TextView telefone = viewCriada.findViewById(R.id.item_contato_telefone);
-        telefone.setText(contato.getTelefone());
+        telefone.setText(contato.getTelefoneFixo());
         TextView email = viewCriada.findViewById(R.id.item_contato_email);
         email.setText(contato.getEmail());
     }

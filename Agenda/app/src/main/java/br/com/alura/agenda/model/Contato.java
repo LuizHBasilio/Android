@@ -1,21 +1,32 @@
 package br.com.alura.agenda.model;
 
-import java.io.Serializable;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+import java.util.Calendar;
+
+@Entity
 public class Contato implements Serializable {
+
+    @PrimaryKey(autoGenerate = true)
     private int id = 0;
     private String nome;
-    private String telefone;
+    private String telefoneFixo;
+    private String telefoneCelular;
     private String email;
-
-    public Contato(String nome, String telefone, String email) {
-        this.nome = nome;
-        this.telefone = telefone;
-        this.email = email;
-    }
+    private Calendar momentoDeCadastro = Calendar.getInstance();
 
     public Contato() {
 
+    }
+
+    public Calendar getMomentoDeCadastro() {
+        return momentoDeCadastro;
+    }
+
+    public void setMomentoDeCadastro(Calendar momentoDeCadastro) {
+        this.momentoDeCadastro = momentoDeCadastro;
     }
 
     public String getNome() {
@@ -26,16 +37,16 @@ public class Contato implements Serializable {
         this.nome = nome;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setTelefoneFixo(String telefoneFixo) {
+        this.telefoneFixo = telefoneFixo;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getTelefoneFixo() {
+        return telefoneFixo;
     }
 
     public String getEmail() {
@@ -57,5 +68,12 @@ public class Contato implements Serializable {
 
     public boolean temIdValido() {
         return id > 0;
+    }
+
+    public String getTelefoneCelular() {
+        return telefoneCelular;
+    }
+    public void setTelefoneCelular(String telefoneCelular) {
+        this.telefoneCelular = telefoneCelular;
     }
 }

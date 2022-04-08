@@ -2,7 +2,10 @@ package br.com.alura.agenda;
 
 import android.app.Application;
 
-import br.com.alura.agenda.DAO.ContatoDAO;
+import androidx.room.Room;
+
+import br.com.alura.agenda.database.AgendaDatabase;
+import br.com.alura.agenda.database.dao.ContatoDAO;
 import br.com.alura.agenda.model.Contato;
 
 public class AgendaApplication extends Application {
@@ -14,8 +17,9 @@ public class AgendaApplication extends Application {
     }
 
     private void criaAlunosDeTeste() {
-        ContatoDAO contatoDAO = new ContatoDAO();
-        contatoDAO.salva(new Contato("Luiz", "985731948", "luiz@gmail.com"));
-        contatoDAO.salva(new Contato("Marcos", "998756645", "marcos@gmail.com"));
+        AgendaDatabase database = Room
+                .databaseBuilder(this, AgendaDatabase.class, "agenda.db")
+                .allowMainThreadQueries()
+                .build();
     }
 }

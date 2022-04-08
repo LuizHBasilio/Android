@@ -5,13 +5,15 @@ import static br.com.alura.agenda.ui.activity.ConstantesActivities.CHAVE_CONTATO
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import br.com.alura.agenda.DAO.ContatoDAO;
 import br.com.alura.agenda.R;
+import br.com.alura.agenda.database.AgendaDatabase;
+import br.com.alura.agenda.database.dao.ContatoDAO;
 import br.com.alura.agenda.model.Contato;
 
 public class FormularioContatoActivity extends AppCompatActivity {
@@ -19,15 +21,18 @@ public class FormularioContatoActivity extends AppCompatActivity {
     public static final String TITULO_APPBAR_NOVO_CONTATO = "Novo Contato";
     private static final String TITULO_APPBAR_EDITA_CONTATO = "Edita Contato";
     private EditText campoNome;
-    private EditText campoTelefone;
+    private EditText campoTelefoneFixo;
+    private EditText campoTelefoneCelular;
     private EditText campoEmail;
-    private final ContatoDAO contatoDAO = new ContatoDAO();
+    private ContatoDAO contatoDAO;
     private Contato contato;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_contato);
+        AgendaDatabase database = AgendaDatabase.getInstance(this);
+        contatoDAO = database.getRoomAlunoDAO();
         inicializacaoDosCampos();
         carregaContato();
     }
@@ -61,7 +66,8 @@ public class FormularioContatoActivity extends AppCompatActivity {
 
     private void preencheCampos() {
         campoNome.setText(contato.getNome());
-        campoTelefone.setText(contato.getTelefone());
+        campoTelefoneFixo.setText(contato.getTelefoneFixo());
+        campoTelefoneCelular.setText(contato.getTelefoneCelular());
         campoEmail.setText(contato.getEmail());
     }
 
@@ -77,17 +83,21 @@ public class FormularioContatoActivity extends AppCompatActivity {
 
     private void inicializacaoDosCampos() {
         campoNome = findViewById(R.id.activity_formulario_contato_nome);
-        campoTelefone = findViewById(R.id.activity_formulario_contato_telefone);
+        campoTelefoneFixo = findViewById(R.id.activity_formulario_contato_telefone_fixo);
+        campoTelefoneCelular = findViewById(R.id.activity_formulario_contato_telefone_celular);
         campoEmail = findViewById(R.id.activity_formulario_contato_email);
+
     }
 
     private void preencheContato() {
         String nome = campoNome.getText().toString();
-        String telefone = campoTelefone.getText().toString();
+        String telefoneFixo = campoTelefoneFixo.getText().toString();
+        String telefoneCelular = campoTelefoneCelular.getText().toString();
         String email = campoEmail.getText().toString();
 
         contato.setNome(nome);
-        contato.setTelefone(telefone);
+        contato.setTelefoneFixo(telefoneFixo);
+        contato.setTelefoneCelular(telefoneCelular);
         contato.setEmail(email);
     }
 }
