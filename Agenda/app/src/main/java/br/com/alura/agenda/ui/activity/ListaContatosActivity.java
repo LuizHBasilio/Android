@@ -35,7 +35,8 @@ public class ListaContatosActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.activity_lista_contatos_menu, menu);
+        getMenuInflater()
+                .inflate(R.menu.activity_lista_contatos_menu, menu);
     }
 
     @Override

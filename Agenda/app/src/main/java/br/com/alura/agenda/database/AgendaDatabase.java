@@ -13,21 +13,24 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import br.com.alura.agenda.database.converter.ConversorCalendar;
+import br.com.alura.agenda.database.converter.ConversorTipoTelefone;
 import br.com.alura.agenda.database.dao.ContatoDAO;
+import br.com.alura.agenda.database.dao.TelefoneDAO;
 import br.com.alura.agenda.model.Contato;
+import br.com.alura.agenda.model.Telefone;
 
-@Database(entities = {Contato.class}, version = 4)
-@TypeConverters({ConversorCalendar.class})
+@Database(entities = {Contato.class, Telefone.class}, version = 6)
+@TypeConverters({ConversorCalendar.class, ConversorTipoTelefone.class})
 public abstract class AgendaDatabase extends RoomDatabase {
 
     private static final String NOME_DATABASE = "agenda.db";
+    public abstract ContatoDAO getContatoDAO();
+    public abstract TelefoneDAO getTelefoneDAO();
 
-    public abstract ContatoDAO getRoomAlunoDAO();
 
     public static AgendaDatabase getInstance(Context context) {
         return Room
                 .databaseBuilder(context, AgendaDatabase.class, NOME_DATABASE)
-                .allowMainThreadQueries()
                 .addMigrations(TODAS_MIGRATIONS)
                 .build();
     }

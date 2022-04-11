@@ -6,6 +6,8 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import br.com.alura.agenda.asynctask.BuscaContatoTask;
+import br.com.alura.agenda.asynctask.RemoveContatoTask;
 import br.com.alura.agenda.database.AgendaDatabase;
 import br.com.alura.agenda.database.dao.ContatoDAO;
 import br.com.alura.agenda.model.Contato;
@@ -21,7 +23,7 @@ public class ListaContatosView {
         this.context = context;
         this.adapter = new ListaContatosAdapter(this.context);
         contatoDAO = AgendaDatabase.getInstance(context)
-                .getRoomAlunoDAO();
+                .getContatoDAO();
     }
 
     public void confirmaRemocao(final MenuItem item) {
@@ -39,12 +41,12 @@ public class ListaContatosView {
     }
 
     public void atualizaContatos() {
-        adapter.atualiza(contatoDAO.todos());
+        new BuscaContatoTask(contatoDAO, adapter).execute();
     }
 
-    private void remove(Contato contatoEscolhido) {
-        contatoDAO.remove(contatoEscolhido);
-        adapter.remove(contatoEscolhido);
+    private void remove(Contato contato) {
+        new RemoveContatoTask(contatoDAO, adapter, contato).execute();
+
     }
 
     public void configuraAdapter(ListView listaDeContatos) {

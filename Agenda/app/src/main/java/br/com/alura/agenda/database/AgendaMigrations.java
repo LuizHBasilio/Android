@@ -1,8 +1,12 @@
 package br.com.alura.agenda.database;
 
+import static br.com.alura.agenda.model.TipoTelefone.FIXO;
+
 import androidx.annotation.NonNull;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import br.com.alura.agenda.model.TipoTelefone;
 
 class AgendaMigrations {
 
@@ -12,7 +16,7 @@ class AgendaMigrations {
             database.execSQL("ALTER TABLE contato ADD COLUMN sobrenome TEXT");
         }
     };
-    public static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+    private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             // Criar nova tabela com as informações desejadas
@@ -30,11 +34,58 @@ class AgendaMigrations {
             database.execSQL("ALTER TABLE contato_novo RENAME TO contato");
         }
     };
-    public static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+    private static final Migration MIGRATION_3_4 = new Migration(3, 4) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE contato ADD COLUMN momentoDeCadastro INTEGER");
         }
     };
-    static final Migration[] TODAS_MIGRATIONS = {MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4};
+    private static final Migration MIGRATION_4_5 = new Migration(4, 5) {
+            @Override
+            public void migrate(@NonNull SupportSQLiteDatabase database) {
+                database.execSQL("CREATE TABLE IF NOT EXISTS `contato_novo` (" +
+                        "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                        "`nome` TEXT, " +
+                        "`telefoneFixo` TEXT, " +
+                        "`email` TEXT, " +
+                        "`momentoDeCadastro` INTEGER, " +
+                        "`telefoneCelular` TEXT)");
+
+                database.execSQL("INSERT INTO contato_novo (id, nome, telefoneFixo, email, momentoDeCadastro) " +
+                        "SELECT id, nome, telefone, email, momentoDeCadastro FROM contato");
+
+                database.execSQL("DROP TABLE contato");
+
+                database.execSQL("ALTER TABLE contato_novo RENAME TO contato");
+            }
+        };
+    private static final Migration MIGRATION_5_6 = new Migration(5,6) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `contato_novo` (" +
+                    "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "`nome` TEXT, " +
+                    "`email` TEXT, " +
+                    "`momentoDeCadastro` INTEGER)");
+
+            database.execSQL("INSERT INTO contato_novo (id, nome, email, momentoDeCadastro) " +
+                    "SELECT id, nome, email, momentoDeCadastro FROM contato");
+
+            database.execSQL("CREATE TABLE IF NOT EXISTS `Telefone` (" +
+                    "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "`numero` TEXT, " +
+                    "`tipo` TEXT, " +
+                    "`contatoId` INTEGER NOT NULL)");
+
+            database.execSQL("INSERT INTO Telefone (numero, contatoId) " +
+                    "SELECT telefoneFixo, id FROM Contato");
+
+            database.execSQL("UPDATE Telefone SET tipo = ?", new TipoTelefone[] {FIXO});
+
+            database.execSQL("DROP TABLE contato");
+
+            database.execSQL("ALTER TABLE contato_novo RENAME TO contato");
+        }
+    };
+    static final Migration[] TODAS_MIGRATIONS = {MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6};
 }

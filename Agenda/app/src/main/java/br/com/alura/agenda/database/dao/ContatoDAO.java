@@ -14,7 +14,7 @@ import br.com.alura.agenda.model.Contato;
 public interface ContatoDAO {
 
     @Insert
-    void salva(Contato luiz);
+    Long salva(Contato luiz);
 
     @Query("SELECT * FROM contato")
     List<Contato> todos();

@@ -11,15 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.alura.agenda.R;
+import br.com.alura.agenda.asynctask.BuscaPrimeiroTelefoneDoContatoTask;
+import br.com.alura.agenda.database.AgendaDatabase;
+import br.com.alura.agenda.database.dao.TelefoneDAO;
 import br.com.alura.agenda.model.Contato;
 
 public class ListaContatosAdapter extends BaseAdapter {
 
     private final List<Contato> contatos = new ArrayList<>();
     private final Context context;
+    private final TelefoneDAO telefoneDAO;
 
     public ListaContatosAdapter(Context context) {
         this.context = context;
+        telefoneDAO = AgendaDatabase.getInstance(context).getTelefoneDAO();
     }
 
     @Override
@@ -29,13 +34,11 @@ public class ListaContatosAdapter extends BaseAdapter {
 
     @Override
     public Contato getItem(int posicao) {
-
         return contatos.get(posicao);
     }
 
     @Override
     public long getItemId(int posicao) {
-
         return contatos.get(posicao).getId();
     }
 
@@ -47,14 +50,18 @@ public class ListaContatosAdapter extends BaseAdapter {
         return viewCriada;
     }
 
-    private void vincula(View viewCriada, Contato contato) {
-        TextView nome = viewCriada.findViewById(R.id.item_contato_nome);
+    private void vincula(View view, Contato contato) {
+        TextView nome = view.findViewById(R.id.item_contato_nome);
         nome.setText(contato.getNome());
-        TextView telefone = viewCriada.findViewById(R.id.item_contato_telefone);
-        telefone.setText(contato.getTelefoneFixo());
-        TextView email = viewCriada.findViewById(R.id.item_contato_email);
+        TextView telefone = view.findViewById(R.id.item_contato_telefone);
+        new BuscaPrimeiroTelefoneDoContatoTask(telefoneDAO, contato.getId(),
+                telefoneEncontrado ->
+            telefone.setText(telefoneEncontrado.getNumero())).execute();
+        TextView email = view.findViewById(R.id.item_contato_email);
         email.setText(contato.getEmail());
+
     }
+
 
     private View criaView(ViewGroup viewGroup) {
         return LayoutInflater
